@@ -78,11 +78,11 @@ public class ContactPerson extends Contact {
                 setSurname(scanner.nextLine().trim());
                 break;
             case BIRTH:
-                System.out.print("Enter the birth date: ");
+                System.out.print("Enter the birth date (yyyy-MM-dd): ");
                 setBirthDate(scanner.nextLine().trim());
                 break;
             case GENDER:
-                System.out.print("Enter gender: ");
+                System.out.print("Enter gender (M or F): ");
                 setGender(scanner.nextLine().trim());
                 break;
             case NUMBER:

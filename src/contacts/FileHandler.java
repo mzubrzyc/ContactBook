@@ -17,33 +17,37 @@ public class FileHandler {
 
     public void saveContactsToFile(List<Contact> contacts) throws Exception {
 
-        ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(
-                new FileOutputStream(filePath)));
+        try (ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(
+                new FileOutputStream(filePath)))) {
 
-        for (Contact contact : contacts) {
-            oos.writeObject(contact);
+            for (Contact contact : contacts) {
+                oos.writeObject(contact);
+            }
+
+            // to indicate there are no more objects to be read, it ends the reading loop
+            oos.writeObject(null);
+
         }
-
-        oos.writeObject(null);
-
-        oos.close();
 
     }
 
     public List<Contact> readContacts() throws Exception {
 
+// used to create file for the first time
 //        filePath.createNewFile();
-
-        ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(filePath)));
 
         Contact contact;
         List<Contact> contacts = new ArrayList<>();
 
-        while ((contact = (Contact)ois.readObject()) != null) {
-            contacts.add(contact);
-        }
+        try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(filePath)))) {
 
-        ois.close();
+            while ((contact = (Contact) ois.readObject()) != null) {
+                contacts.add(contact);
+            }
+
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
 
         return contacts;
 
